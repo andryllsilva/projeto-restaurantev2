@@ -11,7 +11,7 @@ module.exports = {
     })
   },
 
-  login(email, senha){
+  login(email, password){
 
     return new Promise((resolve, reject) => {
 
