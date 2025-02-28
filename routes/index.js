@@ -9,25 +9,13 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 
   menus.getMenus().then(results => {
+    console.log(results)
     res.render('index', {
       title: 'Restaurante Saboroso!',
       menus: results,
       isHome: true
     })
   })
-
-  conn.query(`
-    SELECT * FROM tb_menus ORDER BY title`, (err, results) => {
-
-      if(err){
-        console.log(err)
-      }
-
-      res.render('index', {
-        title: 'Restaurante Saboroso!',
-        menus: results
-      })
-    })
 });
 
 
