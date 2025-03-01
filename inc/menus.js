@@ -1,3 +1,4 @@
+const { query } = require('express');
 let conn = require('./db');
 let path = require('path')
 
@@ -24,15 +25,45 @@ module.exports = {
 
       fields.photo = `images/${path.parse(files.photo.path).base}`;
 
-      conn.query(`
+      let query, queryPhoto= "", params = [
+        fields.title,
+        fields.description,
+        fields.price,
+        ]
+
+        if(files.photo.name){
+
+          queryPhoto = `,photo = ?`
+
+          params.push(fields.photo)
+        }
+ 
+      if(parseInt(fields.id) > 0){
+
+        params.push(fields.id)
+
+        query = `
+          UPDATE tb_menus
+          SET title = ?,
+              description = ?,
+              price = ?,
+              photo = ?
+          WHERE id =  ?
+        `;
+      }else {
+
+        if(!files.photo.name){
+          reject("Envie a foto do prato.")
+        }
+        query = `
         INSERT INTO tb_menus (title, description, price, photo)
         VALUES(?, ?, ?, ?)
-        `, [
-          fields.title,
-          fields.description,
-          fields.price,
-          `images/${files.photo.name}`
-        ], (err, results) => {
+        `;
+
+        
+      }
+
+      conn.query(query, params, (err, results) => {
 
           if(err){
             reject(err)
