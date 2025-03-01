@@ -212,7 +212,7 @@
   </div>
 
   <%- include("inc/footer") -%>
-    <script src="/js/hcode-moment.min.js"></script>
+    <script src="/js/moment.min.js"></script>
     <script src="/js/hcode-formsave.js"></script>
     <script>
 
@@ -232,6 +232,30 @@
       }).catch(err => {
 
         console.log(err)
+      });
+
+      [...document.querySelectorAll('.btn-delete')].forEach(btn => {
+
+        btn.addEventListener('click', e => {
+
+
+          let tr = e.composedPath().find(el => {
+            return (el.tagName.toUpperCase() === 'TR')
+          })
+
+          let data = JSON.parse(tr.dataset.row)
+
+          if (confirm(`Deseja realmente excluir a reserva${data.name}?`)) {
+            fetch(`/admin/reservations/${data.id}`, {
+              method: 'DELETE'
+            }).then(response => response.json())
+              .then(json => {
+                window.location.reload()
+              })
+          }
+
+
+        })
       });
 
       [...document.querySelectorAll('.btn-update')].forEach(btn => {
