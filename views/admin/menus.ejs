@@ -151,7 +151,19 @@
 
   <%- include("inc/footer") -%>
 
+
+
+
+
+    <script src="/hs/hcode.filereader.js">
+
+    </script>
     <script>
+
+      new HcodeFileReader('#modal-create [type=file]', '#modal-create img')
+      new HcodeFileReader('#modal-create [type=file]', '#modal-update img')
+
+      
       let formCreate = document.querySelector('#modal-create form')
 
       formCreate.addEventListener('submit', e => {
@@ -183,11 +195,11 @@
 
             switch (name) {
               case 'photo':
-
+                formUpdate.querySelector("img").src = "/"+data[name]
                 break;
               default:
-              let input = formUpdate.querySelector(`[name=${name}]`)
-                if(input) input.value = data[name];
+                let input = formUpdate.querySelector(`[name=${name}]`)
+                if (input) input.value = data[name];
 
             }
           }
@@ -196,5 +208,4 @@
 
         })
       })
-
     </script>
